@@ -1,0 +1,12 @@
+import math
+def fn_1(number):
+    row=5
+    while (row<=number) and (row>=0):
+        row_spacer=(number-row)*" "
+        row_content=(row*2+1)*"$"
+        print(row_spacer+row_content)
+        row=row-1
+    return None
+
+my_input=(int(input("Enter the number of rows:")))
+fn_1(my_input)
