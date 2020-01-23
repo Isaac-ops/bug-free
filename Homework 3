@@ -1,0 +1,18 @@
+import math
+def sydTable(cost, salvage, life):
+    print("{0:<} {1:^18} {2:18}" .format("Year","Depreciation","Book value at year end"))
+    for a in range(1, life + 1):
+        total = cost - salvage
+        total_life = (life * (life + 1)) / 2
+        counter = life
+        while (counter>0):
+            depreciation=total*(life/total_life)
+            life=life-1
+            counter=counter-1
+            cost-=depreciation
+
+            print("{0:4}\t{1:^.2f}\t{2:30.2f}".format(life+1, depreciation, cost))
+
+
+sydTable(10000,1000,10)
+sydTable(20000,1000,7)
