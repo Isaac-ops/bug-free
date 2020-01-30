@@ -1,0 +1,20 @@
+def cipher(phrase, shift):
+    c_text=""
+
+    for a in range (0,len(phrase)):
+        chars=phrase[a]
+        if ord(chars)+shift<32:
+            if (ord(chars)+shift+95)<32:
+                pos=(ord(chars)+shift+95)%126
+            else:
+                pos=(ord(chars)+shift +95)
+            c_text+= chr(pos)
+        elif ord(chars) + shift>126:
+            if(ord(chars)+shift-95)>126:
+                pos=(ord(chars)+shift-95)%126
+            else:
+                pos= (ord(chars)+shift -95)
+            c_text += chr(pos)
+        else:
+            c_text += chr(ord(chars)+shift)
+    return c_text
