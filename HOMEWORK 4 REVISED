@@ -1,0 +1,23 @@
+import math
+def cipher(phrase,shift):
+    Old_list=list(phrase)
+    for a in range (0,len(Old_list)):
+        c_text=((ord(Old_list[a])+shift-32)%95+32)
+        Old_list[a]=chr(c_text)
+    return ("".join(Old_list))
+
+print(cipher("ABCDE",97-65))
+print(cipher("abcde",65-97))
+print(cipher(" !\"#$",0))
+print(cipher(" !\"#$",95))
+print(cipher(" !\"#$",-95))
+print(cipher(" !\"#$",2))
+print(cipher(" !\"#$",2+95))
+print(cipher(" !\"#$",-3))
+print(cipher(" !\"#$",-3-95))
+print(cipher("Attack at dawn",13))
+print(cipher("N\"\"npx-n\"-qn%{",-13))
+print(cipher("Attack at dawn",13+95*2))
+print(cipher("N\"\"npx-n\"-qn%{",-13-95*2))
+print(cipher("These are a pair of {}.",20+95*3))
+print(cipher("h|y(y4u'y4u4%u}'4$z402B",-20-95*4))
