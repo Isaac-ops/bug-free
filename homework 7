@@ -1,0 +1,17 @@
+directory=[('Dr. Jason Greene','Dean, College of Business','BAB 202G','256.824.6277','jason.greene@uah.edu'),
+           ('Dr. Wafa Orman','Associate Professor, Associate Dean for Undergraduate Programs','BAB 350','256.824.5674','wafa.orman@uah.edu'),
+           ('Ms. Sandy Boyd','Senior Administrative Assistant','BAB 202','256.824.6736','sandra.boyd@uah.edu'),
+           ('Ms. Drew Hartt','Marketing and Events Coordinator','BAB 202','256.824.4725','drew.hartt.@uah.edu'),
+           ('Mr. Hunter Hoskins','Resource Manager','BAB 202','256.824.6740','hunter.hoskins@uah.edu'),
+           ('Ms. Violet Huang','Senior Accreditation Database Research Coordinator','BAB 350','256.824.6785','luolan.huang@uah.edu')]
+
+
+
+print("Search for: ")
+str=input()
+while str:
+    for f in range(0,len(directory)):
+        if (any(str.lower() in f for f in directory[f])) or (any(str.capitalize() in f for f in directory[f])):
+            print(directory[f])
+    print("Search for: ")
+    str=input()
