@@ -1,0 +1,25 @@
+import os
+import random
+import discord
+from discord.ext import commands
+import requests
+from bs4 import BeautifulSoup
+
+
+
+TOKEN = 'ODg5NTEzMDAyMTIwOTIxMTE5.YUiVig.uCerasg5fGkhRt1aCc9YEFGqtDM'
+GUILD = 'Isaac'
+
+
+bot = commands.Bot(command_prefix='!')
+
+
+@bot.command(name='Random-Wiki-Article', help='Prints a random wiki article')
+async def wiki(ctx):
+    url = requests.get("https://en.wikipedia.org/wiki/Special:Random")
+    soup = BeautifulSoup(url.content, "html.parser")
+    title = soup.find(class_="firstHeading").text
+    response = ("https://en.wikipedia.org/wiki/%s" %title)     
+    await ctx.send(response)
+
+bot.run(TOKEN)
