@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 
 
-TOKEN = 'ODg5NTEzMDAyMTIwOTIxMTE5.YUiVig.uCerasg5fGkhRt1aCc9YEFGqtDM'
+TOKEN = '*****************************'
 GUILD = 'Isaac'
 
 
