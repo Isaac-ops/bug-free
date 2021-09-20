@@ -5,7 +5,7 @@ from discord.ext import commands
 import requests
 
 
-TOKEN = 'ODg5NTEzMDAyMTIwOTIxMTE5.YUiVig.uCerasg5fGkhRt1aCc9YEFGqtDM'
+TOKEN = '*******************************'
 GUILD = 'Isaac'
 
 
