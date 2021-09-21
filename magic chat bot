@@ -1,0 +1,30 @@
+import os
+import random
+import discord
+from discord.ext import commands
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+
+url = requests.get("https://www.echomtg.com/groups/trending-up/")
+soup = BeautifulSoup(url.content, "html.parser")
+html_table = soup.find(id='group-table')
+#rows = table.find_all('tr')
+#values = [rows]
+
+def tableDataText(table):
+    def rowgetDataText(tr, coltag='td'):
+        return [td.get_text(strip=True) for td in tr.find_all(coltag)]
+    rows = []
+    trs = table.find_all('tr')
+    headerow = rowgetDataText(trs[0], 'th')
+    if headerow:
+        rows.append(headerow)
+        trs = trs[1:]
+    for tr in trs:
+        rows.append(rowgetDataText(tr, 'td'))
+    return rows
+
+list_table = tableDataText(html_table)
+print(list_table[1][1],"Price change:%s"%list_table[1][2],list_table[1][3],list_table[1][4])
