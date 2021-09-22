@@ -4,10 +4,31 @@ import discord
 from discord.ext import commands
 import requests
 from bs4 import BeautifulSoup
+from tabulate import tabulate
+
+url = requests.get("https://www.echomtg.com/groups/trending-up/")
+soup = BeautifulSoup(url.content, "html.parser")
+html_table = soup.find(id='group-table')
+#rows = table.find_all('tr')
+#values = [rows]
+
+def tableDataText(table):
+    def rowgetDataText(tr, coltag='td'):
+        return [td.get_text(strip=True) for td in tr.find_all(coltag)]
+    rows = []
+    trs = table.find_all('tr')
+    headerow = rowgetDataText(trs[0], 'th')
+    if headerow:
+        rows.append(headerow)
+        trs = trs[1:]
+    for tr in trs:
+        rows.append(rowgetDataText(tr, 'td'))
+    return rows
+
+list_table = tableDataText(html_table)
 
 
-
-TOKEN = '*****************************'
+TOKEN = 'ODg5NTEzMDAyMTIwOTIxMTE5.YUiVig.uCerasg5fGkhRt1aCc9YEFGqtDM'
 GUILD = 'Isaac'
 
 
@@ -19,7 +40,14 @@ async def wiki(ctx):
     url = requests.get("https://en.wikipedia.org/wiki/Special:Random")
     soup = BeautifulSoup(url.content, "html.parser")
     title = soup.find(class_="firstHeading").text
-    response = ("https://en.wikipedia.org/wiki/%s" %title)     
+    response = ("https://en.wikipedia.org/wiki/%s" %title)
     await ctx.send(response)
+
+@bot.command(name='Top-5-mtg', help='Lists the top five grossing mtg cards')
+async def table_commad(ctx):
+    response1 = (list_table[1][1],list_table[1][2],list_table[1][3],list_table[1][4],list_table[2][1],list_table[2][2],list_table[2][3],list_table[2][4],list_table[3][1],list_table[3][2],list_table[3][3],list_table[3][4],list_table[4][1],list_table[4][2],list_table[4][3],list_table[4][4],list_table[5][1],list_table[5][2],list_table[5][3],list_table[5][4])
+    response = tabulate(response1)
+    await ctx.send(response)
+
 
 bot.run(TOKEN)
