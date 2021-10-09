@@ -86,36 +86,29 @@ async def rspicker(ctx):
         reponse = ('error')
     await ctx.send(response)
 
-@bot.command(pass_context = True, name='Teleport', help='Nani?!')
-@has_permissions(kick_members=True)
-async def kick(ctx,*,target: Member):
-    if target.server_permissions.adimistrator:
-        await bot.say("He's too powerful")
-    else:
-        try:
-            response=('Nothing personal,kid....:gun: :man_detective: :smoking:' )
-            await ctx.say(response)
-            await bot.kick(target)
-        except Exception:
-            await bot.say("Something went wrong")
+#@bot.command(pass_context = True, name="Teleport")
+#async def kick(ctx,*,target: Member):
+#    await ctx.send('Nothing personal,kid....:gun: :man_detective: :smoking:')
+#    await ctx.guild.kick(target)
 
 
-@bot.command(name='Roulette', help='Play at your own risk.')
-async def roulette(ctx,player1):
+
+@bot.command(pass_context = True, name='Roulette', help='Play at your own risk.')
+async def roulette(ctx,*,target: Member):
     roll1=random.randint(1,6)
     if roll1 == 2:
-        response=('%s is safe this round.'%player1)
+        response=('%s is safe this round.'%target)
     elif roll1 == 3:
-        response=('%s is safe this round.'%player1)
+        response=('%s is safe this round.'%target)
     elif roll1 == 4:
-        response=('%s is safe this round.'%player1)
+        response=('%s is safe this round.'%target)
     elif roll1 == 5:
-        response=('%s is safe this round.'%player1)
+        response=('%s is safe this round.'%target)
     elif roll1 == 6:
-        response=('%s is safe this round.'%player1)
+        response=('%s is safe this round.'%target)
     elif roll1 == 1:
-        response=('%s loses.'%player1)
-        await bot.kick(player1)  
+        response=('%s got shot. Unlucky.'%target)
+        await ctx.guild.kick(target)
     else:
         response=('Something went wrong. Its your lucky day.')  
     await ctx.send(response)
