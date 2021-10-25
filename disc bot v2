@@ -238,27 +238,31 @@ async def bj(ctx,amount = int):
                 return win == 2
             elif final_results<21:
                 await ctx.send('You won this round.')
-                amounts[p1] +=amount
+                return win == 1
             elif final_results==21:
                 await ctx.send('You hit 21. Nice!')
-                amounts[p1] +=amount
+                return win == 1
             else:
                 await ctx.send('Error')
         elif msg.content.lower() == "n":
             if first_roll>dealer_roller:
                 await ctx.send('You beat the dealer.')
-                amounts[p1] +=amount
+                return win == 1
             else:
                 await ctx.send('The dealer beat you.')
-                amounts[p1] -=amount
+                return win == 2
     elif dealer_roller>21:
         await ctx.send('Dealer busted.')
-        amounts[p1] +=amount
+        return win == 1
     elif dealer_roller<21:
         await ctx.send('Dealer cards are lower.')
+        return win == 2
+    elif win == 1:
+        amounts[p1] += amount
+    elif win == 2:
         amounts[p1] -=amount
     else:
-        await ctx.send('Error')
+        await ctx.send('Error.')
 
 
 def _save():
