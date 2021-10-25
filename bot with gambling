@@ -106,8 +106,9 @@ async def kick(ctx,*,target: Member):
 
 
 @bot.command(name='Roulette', help='Play at your own risk.')
-async def roulette(ctx,player1):
+async def roulette(ctx):
     roll1=random.randint(1,6)
+    player1=str(ctx.message.author.id)
     if roll1 == 2:
         response=('%s is safe this round.'%player1)
     elif roll1 == 3:
@@ -139,11 +140,11 @@ async def diceroll(ctx, amount: int, other: discord.Member):
         await ctx.send("You can not afford this gamble.")
     else:
         if d1<d2:
-            await ctx.send("%s has won and gained %d."%(p1, amount))
+            await ctx.send("You won and gained %d."%(amount))
             amounts[p1] +=amount
             amounts[p2] -=amount
         elif d2<d1:
-            await ctx.send("%s has won and gained %d."%(p2, amount))
+            await ctx.send("You lost and lost %d."%(amount))
             amounts[p2] +=amount
             amounts[p1] -=amount
         else:
