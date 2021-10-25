@@ -199,24 +199,77 @@ async def loan(ctx):
     else:
         await ctx.send("Error or no money in bank.")
 
-#@bot.command(pass_context=True)
-#async def secret(ctx):
-#    id=str(ctx.message.author.id)
-#    if amounts[id] <= 0:
-#        await ctx.send("Looks like you don't have any money. I can send you a quick loan.")
-#        amounts[id] = 0
-#        amounts[id] = 999999
-#    elif amounts[id] > 0:
-#        await ctx.send("You have money. No need for a loan")
-#    else:
-#        await ctx.send("Error or no money in bank.")
+
+
+@bot.command(pass_context=True)
+async def bj(ctx,amount = int):
+    p1=str(ctx.message.author.id)
+    win=0
+    number=randint(1,10)
+    jack=10
+    queen=10
+    king=10
+    ace=11
+    cards=[number,jack,queen,king,ace]
+    card1=random.choice(cards)
+    card2=random.choice(cards)   
+    results1=card1  
+    await ctx.send(card1)
+    results2=card2
+    await ctx.send(card2)
+    first_roll=results1+results2
+    dealer_roller=randint(2,21)
+    await ctx.send('The dealers cards equal:%d'%(dealer_roller))
+    if first_roll==21:
+        await ctx.send('Black Jack!You beat the dealer.')
+        return win==1
+    elif first_roll<21:
+        await ctx.send('You hit lower than 21. Want to hit again?')
+        def check(msg):
+            return msg.author ==ctx.author and msg.channel == ctx.channel and msg.content.lower() in ["y", "n"]
+
+        msg = await bot.wait_for("message", check=check)
+        if msg.content.lower() == "y":
+            results3=card1()
+            final_results=first_roll+results3
+            await ctx.send(final_results)
+            if final_results>21:
+                await ctx.send('You lose.')
+                return win == 2
+            elif final_results<21:
+                await ctx.send('You won this round.')
+                amounts[p1] +=amount
+            elif final_results==21:
+                await ctx.send('You hit 21. Nice!')
+                amounts[p1] +=amount
+            else:
+                await ctx.send('Error')
+        elif msg.content.lower() == "n":
+            if first_roll>dealer_roller:
+                await ctx.send('You beat the dealer.')
+                amounts[p1] +=amount
+            else:
+                await ctx.send('The dealer beat you.')
+                amounts[p1] -=amount
+    elif dealer_roller>21:
+        await ctx.send('Dealer busted.')
+        amounts[p1] +=amount
+    elif dealer_roller<21:
+        await ctx.send('Dealer cards are lower.')
+        amounts[p1] -=amount
+    else:
+        await ctx.send('Error')
+
 
 def _save():
     with open('amounts.json', 'w+') as f:
         json.dump(amounts, f)
 
+
 @bot.command()
 async def save(ctx):
     _save()
+
+
 
 bot.run(TOKEN)
