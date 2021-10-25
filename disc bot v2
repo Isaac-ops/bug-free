@@ -1,7 +1,9 @@
-import os
+
 import random
 from random import randint
 import discord
+import discord
+import json
 from discord.ext import commands
 from discord.member import Member
 import requests
@@ -9,6 +11,9 @@ from bs4 import BeautifulSoup
 from tabulate import tabulate
 from discord.ext.commands import has_permissions, CheckFailure, BadArgument
 
+
+amounts= {}
+loan_amounts= {}
 url = requests.get("https://www.echomtg.com/groups/trending-up/")
 soup = BeautifulSoup(url.content, "html.parser")
 html_table = soup.find(id='group-table')
@@ -86,32 +91,132 @@ async def rspicker(ctx):
         reponse = ('error')
     await ctx.send(response)
 
-#@bot.command(pass_context = True, name="Teleport")
-#async def kick(ctx,*,target: Member):
-#    await ctx.send('Nothing personal,kid....:gun: :man_detective: :smoking:')
-#    await ctx.guild.kick(target)
-
+@bot.command(pass_context = True, name='Teleport', help='Nani?!')
+@has_permissions(kick_members=True)
+async def kick(ctx,*,target: Member):
+    if target.server_permissions.adimistrator:
+        await bot.say("He's too powerful")
+    else:
+        try:
+            response=('Nothing personal,kid....:gun: :man_detective: :smoking:' )
+            await ctx.say(response)
+            await bot.kick(target)
+        except Exception:
+            await bot.say("Something went wrong")
 
 
 @bot.command(pass_context = True, name='Roulette', help='Play at your own risk.')
-async def roulette(ctx,*,target: Member):
+async def roulette(ctx):
     roll1=random.randint(1,6)
+    id=str(ctx.message.author.id)
+    amount=amounts[id] * 2
+    target=ctx.author
     if roll1 == 2:
+        amounts[id] += amount
         response=('%s is safe this round.'%target)
     elif roll1 == 3:
+        amounts[id] += amount
         response=('%s is safe this round.'%target)
     elif roll1 == 4:
+        amounts[id] += amount
         response=('%s is safe this round.'%target)
     elif roll1 == 5:
+        amounts[id] += amount
         response=('%s is safe this round.'%target)
     elif roll1 == 6:
+        amounts[id] += amount
         response=('%s is safe this round.'%target)
     elif roll1 == 1:
+        amounts[id] += amount
         response=('%s got shot. Unlucky.'%target)
         await ctx.guild.kick(target)
     else:
         response=('Something went wrong. Its your lucky day.')  
     await ctx.send(response)
-    
+
+@bot.command(pass_context=True)
+async def diceroll(ctx, amount: int, other: discord.Member):
+    p1=str(ctx.message.author.id)
+    p2=str(other.id)
+    d1=randint(1,6)
+    d2=randint(1,6)
+    if p1 not in amounts:
+        await ctx.send("You do not have an account to gamble with.")
+    elif p2 not in amounts:
+        await ctx.send("The person you are gambling against does not have an account.")
+    elif amounts[p1] < amount:
+        await ctx.send("You can not afford this gamble.")
+    else:
+        if d1<d2:
+            await ctx.send("%s won and gained %d."%(ctx.author, amount))
+            amounts[p1] +=amount
+            amounts[p2] -=amount
+        elif d2<d1:
+            await ctx.send("%s lost and lost %d."%(ctx.author, amount))
+            amounts[p2] +=amount
+            amounts[p1] -=amount
+        else:
+            await ctx.send("Tie or error lol.")
+
+@bot.command(pass_context=True)
+async def balance(ctx):
+    id = str(ctx.message.author.id)
+    if id in amounts:
+        await ctx.send("You have {} in the bank".format(amounts[id]))
+    else:
+        await ctx.send("You do not have an account")
+
+@bot.command(pass_context=True)
+async def register(ctx):
+    id = str(ctx.message.author.id)
+    if id not in amounts:
+        amounts[id] = 100
+        await ctx.send("You are now registered")
+        _save()
+    else:
+        await ctx.send("You already have an account")
+
+@bot.event
+async def on_ready():
+    global amounts
+    try:
+        with open('amounts.json') as f:
+            amounts = json.load(f)
+    except FileNotFoundError:
+        print("Could not load amounts.json")
+        amounts = {}
+
+
+@bot.command(pass_context=True)
+async def loan(ctx):
+    id=str(ctx.message.author.id)
+    if amounts[id] <= 0:
+        await ctx.send("Looks like you don't have any money. I can send you a quick loan.")
+        amounts[id] = 0
+        amounts[id] = 100
+    elif amounts[id] > 0:
+        await ctx.send("You have money. No need for a loan")
+    else:
+        await ctx.send("Error or no money in bank.")
+
+#@bot.command(pass_context=True)
+#async def secret(ctx):
+#    id=str(ctx.message.author.id)
+#    if amounts[id] <= 0:
+#        await ctx.send("Looks like you don't have any money. I can send you a quick loan.")
+#        amounts[id] = 0
+#        amounts[id] = 999999
+#    elif amounts[id] > 0:
+#        await ctx.send("You have money. No need for a loan")
+#    else:
+#        await ctx.send("Error or no money in bank.")
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+
+@bot.command()
+async def save(ctx):
+    _save()
 
 bot.run(TOKEN)
