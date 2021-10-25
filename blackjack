@@ -1,0 +1,78 @@
+from random import randint
+import random
+def card1():
+    cards=['number','jack','queen','king','ace']
+    choice=random.choice(cards)
+    print(choice)
+    if choice == 'number':
+        roll1=randint(1,10)
+        return roll1
+    elif choice == 'jack':
+        roll1=10
+        return roll1
+    elif choice == 'queen':
+        roll1=10
+        return roll1
+    elif choice == 'king':
+        roll1=10
+        return roll1
+    elif choice == 'ace':
+        roll1=11
+        return roll1
+    else: 
+        print('error')
+def card2():
+    cards=['number','jack','queen','king','ace']
+    choice=random.choice(cards)
+    print(choice)
+    if choice == 'number':
+        roll1=randint(1,10)
+        return roll1      
+    elif choice == 'jack':
+        roll1=10
+        return roll1
+    elif choice == 'queen':
+        roll1=10
+        return roll1
+    elif choice == 'king':
+        roll1=10
+        return roll1
+    elif choice == 'ace':
+        roll1=11
+        return roll1
+    else: 
+        print('error')
+def roll_again(first):
+    if first<21:
+        callback=input('Do you want to hit?')
+        return callback
+    elif first>21:
+        callback=input('Sorry you lost. Want to try again?')
+        return callback
+    elif first==21:
+        print('You won! Nice black jack.')
+    else:
+        print('error')
+def roll(call):
+    if call == 'yes':
+        results3=card1()
+        second_roll=results1+results2+results3
+    elif call == 'no':
+        second_roll=results1+results2
+    return second_roll
+results1=card1()
+results2=card2()
+first_roll=results1+results2
+call_result=roll_again(first_roll)
+results=roll(call_result)
+dealer_cards=randint(2,21)
+print('The dealers cards equal %d'%(dealer_cards))
+if results < 21:
+    if results > dealer_cards:
+        print('You beat the dealer.')
+    else:
+        print('The dealer beat you.')
+elif results >22:
+    print('You lost.')
+else:
+    print('error')
