@@ -36,7 +36,7 @@ def tableDataText(table):
 list_table = tableDataText(html_table)
 
 
-TOKEN = 'ODg5NTEzMDAyMTIwOTIxMTE5.YUiVig.-iFBDOkNy_7wE9RU0DTDeZvvgyU'
+TOKEN = '***'
 GUILD = 'Isaac'
 
 
